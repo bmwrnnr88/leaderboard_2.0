@@ -28,7 +28,7 @@ st.title("Mr. Ward's Final Exam Leaderboard")
 # Input section
 st.header("Enter New Score")
 name = st.text_input("Student Name")
-score = st.number_input("Score", min_value=0, max_value=100, step=1)
+score = st.number_input("Score", min_value=0.0, max_value=100.0, step=1)
 
 if st.button("Add Score"):
     if name and score is not None:
