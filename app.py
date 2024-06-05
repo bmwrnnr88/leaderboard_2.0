@@ -20,6 +20,10 @@ st.markdown("""
         .medal {
             font-size: 24px; /* Adjust the font size for medal icons */
         }
+        .rank-number {
+            font-size: 24px; /* Adjust the font size for rank numbers */
+            font-weight: bold;
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -54,13 +58,17 @@ if not df.empty:
 # Display leaderboard with differentiation
 st.markdown("<div class='leaderboard-title'>Top 5 Scores</div>", unsafe_allow_html=True)
 if not df.empty:
-    def get_medal(idx):
+    def get_rank_marker(idx):
         if idx == 0:
             return "<span class='medal'>🥇</span>"
         elif idx == 1:
             return "<span class='medal'>🥈</span>"
         elif idx == 2:
             return "<span class='medal'>🥉</span>"
+        elif idx == 3:
+            return "<span class='rank-number'>4</span>"
+        elif idx == 4:
+            return "<span class='rank-number'>5</span>"
         else:
             return ""
 
@@ -75,10 +83,10 @@ if not df.empty:
     leaderboard_html += "<tr><th style='text-align: left;'>Rank</th><th style='text-align: left;'>Names</th><th style='text-align: left;'>Score</th></tr>"
     
     for idx, row in grouped.iterrows():
-        medal = get_medal(idx)
+        rank_marker = get_rank_marker(idx)
         color = "gold" if idx == 0 else "silver" if idx == 1 else "bronze" if idx == 2 else "white"
         names = ", ".join(row['name'])
-        leaderboard_html += f"<tr style='background-color: {color};'><td>{medal}</td><td>{names}</td><td>{row['score']:.1f}</td></tr>"
+        leaderboard_html += f"<tr style='background-color: {color};'><td>{rank_marker}</td><td>{names}</td><td>{row['score']:.1f}</td></tr>"
     
     leaderboard_html += "</table>"
     st.markdown(leaderboard_html, unsafe_allow_html=True)
