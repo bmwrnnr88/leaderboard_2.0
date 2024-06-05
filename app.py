@@ -30,7 +30,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("Mr. Ward's Final Exam Leaderboard")
+st.title("Mr. Ward's Leaderboard")
 
 # Display leaderboard with differentiation
 st.markdown(f"<div class='leaderboard-title'>{st.session_state['title']}</div>", unsafe_allow_html=True)
