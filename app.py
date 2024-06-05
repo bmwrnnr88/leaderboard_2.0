@@ -28,11 +28,11 @@ st.title("Mr. Ward's Final Exam Leaderboard")
 # Input section
 st.header("Enter New Score")
 name = st.text_input("Student Name")
-score = st.number_input("Score", min_value=0.0, max_value=100.0, step=1)
+score = st.number_input("Score", min_value=0.0, max_value=100.0, step=0.1, format="%.1f")
 
 if st.button("Add Score"):
     if name and score is not None:
-        st.session_state['scores'].append({'name': name, 'score': score})
+        st.session_state['scores'].append({'name': name, 'score': round(score, 1)})
         st.success(f"Added {name} with score {score}")
     else:
         st.error("Please enter both name and score")
@@ -78,7 +78,7 @@ if not df.empty:
         medal = get_medal(idx)
         color = "gold" if idx == 0 else "silver" if idx == 1 else "bronze" if idx == 2 else "white"
         names = ", ".join(row['name'])
-        leaderboard_html += f"<tr style='background-color: {color};'><td>{medal}</td><td>{names}</td><td>{row['score']}</td></tr>"
+        leaderboard_html += f"<tr style='background-color: {color};'><td>{medal}</td><td>{names}</td><td>{row['score']:.1f}</td></tr>"
     
     leaderboard_html += "</table>"
     st.markdown(leaderboard_html, unsafe_allow_html=True)
