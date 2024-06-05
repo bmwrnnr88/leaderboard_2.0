@@ -5,6 +5,9 @@ import pandas as pd
 if 'scores' not in st.session_state:
     st.session_state['scores'] = []
 
+if 'title' not in st.session_state:
+    st.session_state['title'] = "Top 5 Scores"
+
 # Custom CSS for larger fonts
 st.markdown("""
     <style>
@@ -30,7 +33,7 @@ st.markdown("""
 st.title("Mr. Ward's Final Exam Leaderboard")
 
 # Display leaderboard with differentiation
-st.markdown("<div class='leaderboard-title'>Top 5 Scores</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='leaderboard-title'>{st.session_state['title']}</div>", unsafe_allow_html=True)
 
 df = pd.DataFrame(st.session_state['scores'])
 
