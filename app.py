@@ -1,17 +1,31 @@
 import streamlit as st
 import pandas as pd
+import json
 
-# Load or initialize the scores
-if 'scores' not in st.session_state:
-    st.session_state['scores'] = []
+# File path to store data
+DATA_FILE = 'leaderboard_data.json'
 
-if 'title' not in st.session_state:
-    st.session_state['title'] = "Top 5 Scores"
+# Load data from JSON file
+def load_data():
+    try:
+        with open(DATA_FILE, 'r') as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        data = {'main_title': "Mr. Ward's Leaderboard", 'title': "Top 5 Scores", 'scores': []}
+    return data
+
+# Initialize the data
+data = load_data()
 
 # Custom CSS for larger fonts
 st.markdown("""
     <style>
-        .leaderboard-title {
+        .leaderboard-main-title {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .leaderboard-subtitle {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 20px;
@@ -30,12 +44,10 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-st.title("Mr. Ward's Leaderboard")
+st.markdown(f"<div class='leaderboard-main-title'>{data['main_title']}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='leaderboard-subtitle'>{data['title']}</div>", unsafe_allow_html=True)
 
-# Display leaderboard with differentiation
-st.markdown(f"<div class='leaderboard-title'>{st.session_state['title']}</div>", unsafe_allow_html=True)
-
-df = pd.DataFrame(st.session_state['scores'])
+df = pd.DataFrame(data['scores'])
 
 if not df.empty:
     df = df.sort_values(by='score', ascending=False)
