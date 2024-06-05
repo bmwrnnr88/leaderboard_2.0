@@ -1,11 +1,21 @@
 import streamlit as st
 import pandas as pd
 
-# Initialize a list to store student scores if it doesn't exist
+# Initialize the session state variables
 if 'scores' not in st.session_state:
     st.session_state['scores'] = []
 
+if 'title' not in st.session_state:
+    st.session_state['title'] = "Top 5 Scores"
+
 st.title("Admin Page - Update Scores")
+
+# Section to change the title
+st.header("Update Leaderboard Title")
+new_title = st.text_input("Leaderboard Title", st.session_state['title'])
+if st.button("Update Title"):
+    st.session_state['title'] = new_title
+    st.success(f"Updated title to: {new_title}")
 
 st.header("Enter New Score")
 name = st.text_input("Student Name")
