@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-from collections import defaultdict
 
 # Initialize a list to store student scores
 if 'scores' not in st.session_state:
@@ -43,8 +42,13 @@ df = pd.DataFrame(st.session_state['scores'])
 
 # Sorting and selecting top 5 scores
 if not df.empty:
+    # Sort by score in descending order
     df = df.sort_values(by='score', ascending=False)
-    top_scores = df.groupby('score').head(1).head(5)['score'].tolist()
+    
+    # Select top 5 unique scores
+    top_scores = df['score'].unique()[:5]
+    
+    # Filter the dataframe to include only the top 5 scores
     df = df[df['score'].isin(top_scores)]
 
 # Display leaderboard with differentiation
@@ -62,6 +66,9 @@ if not df.empty:
 
     # Group by scores
     grouped = df.groupby('score')['name'].apply(list).reset_index()
+    
+    # Sort the grouped dataframe by score in descending order again
+    grouped = grouped.sort_values(by='score', ascending=False).reset_index(drop=True)
 
     # Generate the leaderboard HTML
     leaderboard_html = "<table class='leaderboard-table' style='width:100%; border-collapse: collapse;'>"
