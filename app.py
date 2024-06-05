@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from collections import defaultdict
 
 # Initialize a list to store student scores
 if 'scores' not in st.session_state:
@@ -24,7 +25,9 @@ df = pd.DataFrame(st.session_state['scores'])
 
 # Sorting and selecting top 5 scores
 if not df.empty:
-    df = df.sort_values(by='score', ascending=False).head(5)
+    df = df.sort_values(by='score', ascending=False)
+    top_scores = df.groupby('score').head(1).head(5)['score'].tolist()
+    df = df[df['score'].isin(top_scores)]
 
 # Display leaderboard with differentiation
 st.header("Top 5 Scores")
@@ -39,14 +42,18 @@ if not df.empty:
         else:
             return ""
 
+    # Group by scores
+    grouped = df.groupby('score')['name'].apply(list).reset_index()
+
     # Generate the leaderboard HTML
     leaderboard_html = "<table style='width:100%; border-collapse: collapse;'>"
-    leaderboard_html += "<tr><th style='text-align: left;'>Rank</th><th style='text-align: left;'>Name</th><th style='text-align: left;'>Score</th></tr>"
+    leaderboard_html += "<tr><th style='text-align: left;'>Rank</th><th style='text-align: left;'>Names</th><th style='text-align: left;'>Score</th></tr>"
     
-    for idx, row in df.iterrows():
+    for idx, row in grouped.iterrows():
         medal = get_medal(idx)
         color = "gold" if idx == 0 else "silver" if idx == 1 else "bronze" if idx == 2 else "white"
-        leaderboard_html += f"<tr style='background-color: {color};'><td>{medal}</td><td>{row['name']}</td><td>{row['score']}</td></tr>"
+        names = ", ".join(row['name'])
+        leaderboard_html += f"<tr style='background-color: {color};'><td>{medal}</td><td>{names}</td><td>{row['score']}</td></tr>"
     
     leaderboard_html += "</table>"
     st.markdown(leaderboard_html, unsafe_allow_html=True)
