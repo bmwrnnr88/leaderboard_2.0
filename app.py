@@ -57,7 +57,7 @@ if not df.empty:
             return ""
 
     grouped = df.groupby('score')['name'].apply(list).reset_index()
-    grouped = grouped.sort_values(by='score', ascending=False).reset_index(drop=True)
+    grouped = grouped.sort_values(by 'score', ascending=False).reset_index(drop=True)
 
     leaderboard_html = "<table class='leaderboard-table' style='width:100%; border-collapse: collapse;'>"
     leaderboard_html += "<tr><th style='text-align: left;'>Rank</th><th style='text-align: left;'>Names</th><th style='text-align: left;'>Score</th></tr>"
