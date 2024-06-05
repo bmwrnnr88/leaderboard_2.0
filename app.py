@@ -6,6 +6,24 @@ from collections import defaultdict
 if 'scores' not in st.session_state:
     st.session_state['scores'] = []
 
+# Custom CSS for larger fonts
+st.markdown("""
+    <style>
+        .leaderboard-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .leaderboard-table th, .leaderboard-table td {
+            font-size: 24px;
+            padding: 8px;
+        }
+        .medal {
+            font-size: 24px; /* Adjust the font size for medal icons */
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
 st.title("Mr. Ward's Final Exam Leaderboard")
 
 # Input section
@@ -30,15 +48,15 @@ if not df.empty:
     df = df[df['score'].isin(top_scores)]
 
 # Display leaderboard with differentiation
-st.header("Top 5 Scores")
+st.markdown("<div class='leaderboard-title'>Top 5 Scores</div>", unsafe_allow_html=True)
 if not df.empty:
     def get_medal(idx):
         if idx == 0:
-            return "🥇"
+            return "<span class='medal'>🥇</span>"
         elif idx == 1:
-            return "🥈"
+            return "<span class='medal'>🥈</span>"
         elif idx == 2:
-            return "🥉"
+            return "<span class='medal'>🥉</span>"
         else:
             return ""
 
@@ -46,7 +64,7 @@ if not df.empty:
     grouped = df.groupby('score')['name'].apply(list).reset_index()
 
     # Generate the leaderboard HTML
-    leaderboard_html = "<table style='width:100%; border-collapse: collapse;'>"
+    leaderboard_html = "<table class='leaderboard-table' style='width:100%; border-collapse: collapse;'>"
     leaderboard_html += "<tr><th style='text-align: left;'>Rank</th><th style='text-align: left;'>Names</th><th style='text-align: left;'>Score</th></tr>"
     
     for idx, row in grouped.iterrows():
