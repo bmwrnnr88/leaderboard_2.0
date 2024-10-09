@@ -11,7 +11,7 @@ def load_data():
         with open(DATA_FILE, 'r') as f:
             data = json.load(f)
     except FileNotFoundError:
-        data = {'main_title': "Mr. Ward's Leaderboard", 'title': "Top 5 Scores", 'scores': []}
+        data = {'main_title': "Mr. Ward's Leaderboard", 'title': "Top Scores", 'scores': []}
     return data
 
 # Initialize the data
@@ -51,20 +51,19 @@ df = pd.DataFrame(data['scores'])
 
 if not df.empty:
     df = df.sort_values(by='score', ascending=False)
-    top_scores = df['score'].unique()[:5]
+    top_scores = df['score'].unique()[:10]  # Extract up to the top 10 unique scores
     df = df[df['score'].isin(top_scores)]
 
     def get_rank_marker(idx):
-        if idx == 0:
-            return "<span class='medal'>🥇</span>"
-        elif idx == 1:
-            return "<span class='medal'>🥈</span>"
-        elif idx == 2:
-            return "<span class='medal'>🥉</span>"
-        elif idx == 3:
-            return "<span class='rank-number'>4</span>"
-        elif idx == 4:
-            return "<span class='rank-number'>5</span>"
+        rank_icons = [
+            "<span class='medal'>🥇</span>", 
+            "<span class='medal'>🥈</span>", 
+            "<span class='medal'>🥉</span>"
+        ]
+        if idx < 3:
+            return rank_icons[idx]
+        elif 3 <= idx < 10:
+            return f"<span class='rank-number'>{idx + 1}</span>"
         else:
             return ""
 
