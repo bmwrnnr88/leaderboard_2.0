@@ -67,7 +67,7 @@ if data['scores']:
             data['scores'].pop(idx)
             save_data(data)
             st.success(f"Deleted {row['name']}")
-            st.experimental_rerun()
+            st.rerun()
 
 # Option to clear all scores
 if st.button("Clear All Scores"):
